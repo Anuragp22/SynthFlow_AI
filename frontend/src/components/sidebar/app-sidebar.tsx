@@ -1,4 +1,3 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -6,9 +5,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarMenu
 } from "~/components/ui/sidebar"
 import SidebarMenuItems from "./sidebar-menu-items";
 // Menu items.
@@ -19,9 +16,14 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+        <SidebarGroupLabel className="text-primary mt-4 mb-12 flex flex-col items-start justify-start px-2 text-3xl font-black tracking-widest uppercase">
+            <p>Music</p>
+            <p className="text-lg">Generator</p>
+          </SidebarGroupLabel>
           <SidebarGroupContent>
+            <SidebarMenu>
           <SidebarMenuItems />
+          </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
