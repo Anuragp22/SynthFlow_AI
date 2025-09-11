@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Music } from "lucide-react";
+import { Home, Music, Heart } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
@@ -12,6 +12,12 @@ export default function SidebarMenuItems() {
       title: "Home",
       url: "/",
       icon: Home,
+      active: false,
+    },
+    {
+      title: "Favorites",
+      url: "/favorites",
+      icon: Heart,
       active: false,
     },
     {

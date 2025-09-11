@@ -81,4 +81,47 @@ export async function toggleLikeSong(songId: string) {
   }
 
   revalidatePath("/");
+  revalidatePath("/favorites");
+}
+
+export async function getUserLikedSongs() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) redirect("/auth/sign-in");
+
+  const likedSongs = await db.song.findMany({
+    where: {
+      published: true,
+      likes: {
+        some: {
+          userId: session.user.id,
+        },
+      },
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
+      _count: {
+        select: {
+          likes: true,
+        },
+      },
+      categories: true,
+      likes: {
+        where: {
+          userId: session.user.id,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return likedSongs;
 }

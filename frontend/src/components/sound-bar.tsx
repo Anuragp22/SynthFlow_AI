@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { usePlayerStore } from "~/stores/use-player-store";
+import { toggleLikeSong } from "~/actions/song";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { useEffect, useRef, useState } from "react";
@@ -208,9 +209,10 @@ export default function SoundBar() {
                     Share
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => {
-                      // Add to favorites functionality
-                      console.log("Add to favorites:", track?.id);
+                    onClick={async () => {
+                      if (track?.id) {
+                        await toggleLikeSong(track.id);
+                      }
                     }}
                   >
                     <Heart className="mr-2 h-4 w-4" />
