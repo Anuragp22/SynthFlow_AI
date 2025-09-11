@@ -11,6 +11,7 @@ import {
   Search,
   XCircle,
 } from "lucide-react";
+import Image from "next/image";
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -183,9 +184,12 @@ export function TrackList({ tracks }: { tracks: Track[] }) {
                       {/* Thumbnail */}
                       <div className="group relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-md">
                         {track.thumbnailUrl ? (
-                          <img
+                          <Image
                             className="h-full w-full object-cover"
                             src={track.thumbnailUrl}
+                            alt={track.title || "Track thumbnail"}
+                            width={48}
+                            height={48}
                           />
                         ) : (
                           <div className="bg-muted flex h-full w-full items-center justify-center">

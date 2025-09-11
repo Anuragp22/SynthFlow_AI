@@ -3,6 +3,7 @@
 import type { Category, Like, Song } from "@prisma/client";
 import { Heart, Loader2, Music, Play } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 import { getPlayUrl } from "~/actions/generation";
 import { toggleLikeSong } from "~/actions/song";
 import { usePlayerStore } from "~/stores/use-player-store";
@@ -55,9 +56,12 @@ export function SongCard({ song }: { song: SongWithRelation }) {
       <div onClick={handlePlay} className="cursor-pointer">
         <div className="group relative aspect-square w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">
           {song.thumbnailUrl ? (
-            <img
+            <Image
               className="h-full w-full object-cover object-center"
               src={song.thumbnailUrl}
+              alt={song.title}
+              width={200}
+              height={200}
             />
           ) : (
             <div className="bg-muted flex h-full w-full items-center justify-center">

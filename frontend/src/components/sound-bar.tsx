@@ -7,7 +7,11 @@ import {
   Pause,
   Play,
   Volume2,
+  Share,
+  Heart,
+  X,
 } from "lucide-react";
+import Image from "next/image";
 import { usePlayerStore } from "~/stores/use-player-store";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
@@ -21,7 +25,7 @@ import {
 } from "./ui/dropdown-menu";
 
 export default function SoundBar() {
-  const { track } = usePlayerStore();
+  const { track, clearTrack } = usePlayerStore();
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState([100]);
   const [currentTime, setCurrentTime] = useState(0);
@@ -119,9 +123,12 @@ export default function SoundBar() {
             <div className="flex min-w-0 flex-1 items-center gap-2">
               <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-purple-500 to-pink-500">
                 {track?.artwork ? (
-                  <img
+                  <Image
                     className="h-full w-full rounded-md object-cover"
                     src={track.artwork}
+                    alt={track.title ?? "Track artwork"}
+                    width={40}
+                    height={40}
                   />
                 ) : (
                   <Music className="h-4 w-4 text-white" />
@@ -165,16 +172,65 @@ export default function SoundBar() {
                     <MoreHorizontal className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem
                     onClick={() => {
                       if (!track?.url) return;
-
                       window.open(track?.url, "_blank");
                     }}
                   >
                     <Download className="mr-2 h-4 w-4" />
                     Download
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      if (navigator.share && track) {
+                        try {
+                          await navigator.share({
+                            title: track.title ?? "Track",
+                            text: `Check out this song: ${track.title ?? "Track"}`,
+                            url: window.location.href,
+                          } as ShareData);
+                        } catch (error) {
+                          console.error("Error sharing:", error);
+                        }
+                      } else {
+                        // Fallback: copy to clipboard
+                        try {
+                          await navigator.clipboard.writeText(window.location.href);
+                        } catch (error) {
+                          console.error("Error copying to clipboard:", error);
+                        }
+                      }
+                    }}
+                  >
+                    <Share className="mr-2 h-4 w-4" />
+                    Share
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      // Add to favorites functionality
+                      console.log("Add to favorites:", track?.id);
+                    }}
+                  >
+                    <Heart className="mr-2 h-4 w-4" />
+                    Add to Favorites
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      // Stop audio playback
+                      if (audioRef.current) {
+                        audioRef.current.pause();
+                        audioRef.current.currentTime = 0;
+                      }
+                      setIsPlaying(false);
+                      setCurrentTime(0);
+                      // Clear the track from the player
+                      clearTrack();
+                    }}
+                  >
+                    <X className="mr-2 h-4 w-4" />
+                    Close Player
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

@@ -5,6 +5,10 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    images: {
+        domains: ["synthflowmusic-generation-bucket.s3.ap-south-1.amazonaws.com"],
+    },
+};
 
 export default config;
