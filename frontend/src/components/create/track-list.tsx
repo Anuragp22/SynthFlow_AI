@@ -187,7 +187,7 @@ export function TrackList({ tracks }: { tracks: Track[] }) {
                           <Image
                             className="h-full w-full object-cover"
                             src={track.thumbnailUrl}
-                            alt={track.title || "Track thumbnail"}
+                            alt={track.title ?? "Track thumbnail"}
                             width={48}
                             height={48}
                           />
