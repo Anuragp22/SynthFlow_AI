@@ -105,6 +105,12 @@ export const generateSong = inngest.createFunction(
           };
         }
 
+        if (!endpoint) {
+          throw new Error(
+            `Song ${songId} has no valid generation input combination`,
+          );
+        }
+
         return {
           userId: song.user.id,
           credits: song.user.credits,

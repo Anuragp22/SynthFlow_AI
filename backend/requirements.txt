@@ -1,5 +1,8 @@
-transformers
-diffusers
+# Pinned for reproducible Modal builds.
+# transformers in particular must match ACE-Step's own requirement
+# (version drift here is the most common cause of ACE-Step breakage).
+transformers==4.50.0
+diffusers>=0.33.0
 torch
 pydantic
 boto3

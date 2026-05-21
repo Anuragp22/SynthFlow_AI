@@ -191,7 +191,7 @@ export default function SoundBar() {
                             title: track.title ?? "Track",
                             text: `Check out this song: ${track.title ?? "Track"}`,
                             url: window.location.href,
-                          } as ShareData);
+                          });
                         } catch (error) {
                           console.error("Error sharing:", error);
                         }
