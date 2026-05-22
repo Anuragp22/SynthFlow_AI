@@ -1,7 +1,7 @@
 import { Music } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { getPresignedUrl } from "~/actions/generation";
+import { getPresignedUrl } from "~/lib/s3";
 import { getUserLikedSongs } from "~/actions/song";
 import { SongCard } from "~/components/home/song-card";
 import { auth } from "~/lib/auth";
