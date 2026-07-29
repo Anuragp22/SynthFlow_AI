@@ -10,6 +10,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbList } from "~/components/ui/brea
 import BreadcrumbPageClient from "~/components/sidebar/breadcrumb-page-client"; 
 import { Separator } from "~/components/ui/separator";
 import SoundBar from "~/components/sound-bar";
+import { DocsLink } from "~/components/docs-link";
 
 export const metadata: Metadata = {
   title: "Music Generator",
@@ -46,6 +47,7 @@ export default function RootLayout({
                       </BreadcrumbItem>
                     </BreadcrumbList>
                   </Breadcrumb>
+                  <DocsLink className="ml-auto" />
                 </div>
               </header>
               <main className="flex-1 overflow-y-auto">{children}</main>
