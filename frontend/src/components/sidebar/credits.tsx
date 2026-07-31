@@ -1,5 +1,6 @@
-"use server";
-
+// A Server Component, not a server action. It must NOT carry "use server":
+// that directive turns every export of a module into a public POST endpoint,
+// which is not what a component wants to be.
 import { headers } from "next/headers";
 import { auth } from "~/lib/auth";
 import { db } from "~/server/db";

@@ -286,7 +286,7 @@ const ARCH_EDGES = [
     to: [96, 30] as const,
     title: "You press Create",
     body: 'The browser calls a function that runs on the server. It saves one row in the database marked "queued", fires off an event, and returns nothing at all — no song, not even an id to ask about later.',
-    code: "queueSong() · src/actions/generation.ts",
+    code: "generateSong() → queueSong() · src/actions/generation.ts",
   },
   {
     id: "a2",
@@ -481,10 +481,10 @@ export function DetailedArchitectureDiagram() {
               head='server actions — "use server"'
               headTone={TONE.accent}
               lines={[
-                "generateSong()   queueSong()",
-                "getPlayUrl()     recordListen()",
-                "toggleLikeSong() renameSong()",
-                "setPublishedStatus()",
+                "generateSong()   getPlayUrl()",
+                "recordListen()   toggleLikeSong()",
+                "renameSong()     setPublishedStatus()",
+                "getUserLikedSongs()",
                 "· every export is a public endpoint",
               ]}
               tone={TONE.line}

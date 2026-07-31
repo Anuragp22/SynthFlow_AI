@@ -378,7 +378,8 @@ const ACT_TRUST: readonly Stage[] = [
       'The fix is structural rather than a check: move it into a module marked `import "server-only"`, so reachability from the client becomes a build error instead of something a reviewer has to notice. The signer stays deliberately dumb, and its doc comment states that authorisation is the caller\'s job.',
     ],
     limits: [
-      "Nothing prevents a recurrence. The protection is a convention plus one import; a future helper added to the actions file re-opens the same class of hole.",
+      "Nothing prevents a recurrence, and it recurred. A re-audit of the surface found `queueSong` exported from the same file, taking `userId` as an argument and never checking the session — a public endpoint that would queue generations against any account and drain its credits. It is now module-local, so `generateSong` is the only way in.",
+      "The same audit found `\"use server\"` on two Server Components, `track-list-fetcher.tsx` and `credits.tsx`, which published their render functions as endpoints for no reason. Both directives are removed.",
       "The signer trusts its argument completely by design, so its safety is entirely a property of its two call sites. That coupling is documented only in a comment.",
     ],
   },

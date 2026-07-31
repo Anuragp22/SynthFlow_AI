@@ -28,7 +28,20 @@ export async function generateSong(generateRequest: GenerateRequest) {
   revalidatePath("/create");
 }
 
-export async function queueSong(
+/**
+ * Create the Song row and enqueue the generation job.
+ *
+ * Deliberately NOT exported. Every export of a "use server" module is compiled
+ * into a public, unauthenticated POST endpoint whose arguments the caller
+ * controls — so exporting this would let anyone queue generations against an
+ * arbitrary `userId` and drain that account's credits. Keeping it module-local
+ * means `generateSong` is the only way in, and `userId` is therefore always the
+ * authenticated session's own id.
+ *
+ * Same class of mistake as the presigner that used to live in this file (commit
+ * e858b46); the fix is likewise structural rather than an added check.
+ */
+async function queueSong(
   generateRequest: GenerateRequest,
   guidanceScale: number,
   userId: string,
@@ -80,9 +93,27 @@ export async function getPlayUrl(songId: string) {
     },
   });
 
-  await db.song.update({
+  // Note: listen counting happens in `recordListen` on actual playback, not
+  // here. Issuing a play URL is also done for download/share, which should not
+  // count as a listen.
+  return await getPresignedUrl(song.s3Key!);
+}
+
+/**
+ * Record a listen when a track actually starts playing. Uses `updateMany` so an
+ * unauthorized or non-existent song is a no-op rather than a thrown error.
+ */
+export async function recordListen(songId: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) return;
+
+  await db.song.updateMany({
     where: {
       id: songId,
+      OR: [{ userId: session.user.id }, { published: true }],
     },
     data: {
       listenCount: {
@@ -90,6 +121,4 @@ export async function getPlayUrl(songId: string) {
       },
     },
   });
-
-  return await getPresignedUrl(song.s3Key!);
 }
